@@ -31,7 +31,7 @@ public class Notas_escolares_vetor_matriz_menu {
         nNotas = (int) leiaFloat();//casting=força a pegar o numero inteiro
         //Inicializar vetor e matriz de aluno e notas
         alunos = new String[nAlunos];
-        notas = new float[nAlunos][nNotas + 1];//inicializando a variavel, (+1 cria eszpaço extra para média )
+        notas = new float[nAlunos][nNotas + 1];//inicializando a variavel, (+1 cria espaço extra para média )
         int opM;//inicializa variavel
         do {//faça
             menu();//Cria o menu de opções
