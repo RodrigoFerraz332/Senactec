@@ -24,36 +24,38 @@ public class Cad_alunos_new {
     public static void main(String[] args) {
         // TODO code application logic here
         int opM;
-        do{
+        do {
             menu();
-            opM=leiaInt();
-            switch(opM){
-            case 1:
-            cadAluno();
-            break;
-             case 2:
-            break;
-             case 3:
-             imprimeAlunos();
-            break;
-             case 4:
-            break;
-             case 5:
-            break;
-             case 0:
-             System.out.println("Aplicação encerrada");
-            break;
-        }
-        }while(opM !=0);
+            opM = leiaInt();
+            switch (opM) {
+                case 1:
+                    cadAluno();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    imprimeAlunos();
+                    break;
+                case 4:
+                    deletarAluno();
+                    break;
+                case 5:
+                    imprimeAlunosAtivos();
+                    break;
+                case 0:
+                    System.out.println("Aplicação encerrada");
+                    break;
+            }
+        } while (opM != 0);
 
     }//fim da main
 
     public static void menu() {
-        System.out.println("#Sistema de Alinos#");
+        System.out.println("#Sistema de Alunos#");
         System.out.println("1- Cadastrar aluno: ");
         System.out.println("2-Editar Aluno: ");
         System.out.println("3-Imprimir Aluno: ");
-        System.out.println("4-Deletar Alunos: ");
+        System.out.println("4-Deletar/Inativar Alunos: ");
         System.out.println("5-Imprimir Alunos Ativos: ");
         System.out.println("0-Sair: ");
         System.out.println("Digite aqui: ");
@@ -81,11 +83,21 @@ public class Cad_alunos_new {
 
         } else {
             System.out.println(cpf + "Já existe!");
+            if (verCPF(cpf)) {
+                System.out.println("Quer ativar esse aluno, digite 1 ");
+                int op = leiaInt();
+                if (op == 1) {
+                    getAluno(cpf).setStatus(true);
+                    System.out.println("Aluno" + getAluno(cpf).getNome() + "ativado: ");
+                }
+                
+                
+            }
         }
 
     }//fim cadAluno
 
-    public static boolean verCPF(String cpf) {
+    public static boolean verCPF(String cpf) {//verifica o cpf
         for (Aluno aluno : alunos) {//for para percorrer o ArrayList
             if (aluno.getCpf().equals(cpf)) {
                 return true;
@@ -106,10 +118,58 @@ public class Cad_alunos_new {
     }//fim do leia int
 
     public static void imprimeAlunos() {
-        System.out.println("Lista de Alunos");
-        for (Aluno aluno : alunos) {//Percorre o ArrayList
-            System.out.println(aluno.toString());//puxa o String do model 
-
-        }//fim do For
+        System.out.print("Lista de Alunos");
+        if (alunos.isEmpty()) {
+            System.out.println("Lista vazia!");
+        } else {
+            for (Aluno aluno : alunos) {//Percorre o ArrayList
+                System.out.println(aluno.toString());//puxa o String do model 
+            }
+        }
     }//fim do imprime
+
+    public static Aluno getAluno(String cpf) {
+
+        for (Aluno aluno : alunos) {
+            if (aluno.getCpf().equals(cpf)) {
+                return aluno;
+            }
+        }
+        return null;
+    }//fim do getaluno
+
+    public static void deletarAluno() {
+        System.out.println("Deletar/Inativar Aluno");
+        System.out.println("Informe o CPF: ");
+        String cpf = leia.nextLine();
+        if (verCPF(cpf)) {
+            System.out.println("1-Deletar|n2-Inativar: ");
+            System.out.println("Digite: ");
+            int op = leiaInt();
+            if (op == 1) {
+                alunos.remove(getAluno(cpf));
+                System.out.println("aluno com cpf" + cpf + "deletado com sucesso!");
+            } else if (op == 2) {
+                getAluno(cpf).setStatus(false);
+                System.out.println("Aluno" + getAluno(cpf).getNome() + "inativado: ");
+            }
+
+        } else {
+            System.out.println("Aluno não encontrado!");
+        }
+
+    }//fim do deletar
+
+    public static void imprimeAlunosAtivos() {
+        System.out.print("Lista de Alunos");
+        if (alunos.isEmpty()) {
+            System.out.println("Lista vazia!");
+        } else {
+            for (Aluno aluno : alunos) {//Percorre o ArrayList
+                if (aluno.isStatus()) {
+                    System.out.println(aluno.toString());//puxa o String do model 
+                }
+            }
+        }
+    }//fim do imprime alunos ativos
 }
